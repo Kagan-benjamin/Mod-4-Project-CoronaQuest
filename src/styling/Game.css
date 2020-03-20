@@ -17,6 +17,11 @@
     position: absolute;
 }
 
+.Treasure {
+    background: brown;
+    position: absolute;
+}
+
 .controls {
     margin-top: 20px;
 }
