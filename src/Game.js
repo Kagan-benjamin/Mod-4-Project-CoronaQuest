@@ -55,33 +55,34 @@ class Game extends React.Component {
         this.setState( {cells: [{ x: this.state.cells[0].x + 1 , y: this.state.cells[0].y }] }) 
     }
 
-        // Conditional Method that directs response to
-        // all key presses
-
-    detectLeftObstacles = () => {
-        let emptyObstacles = [];
-        this.state.obstacles.forEach((obstacle) => {
-           if (obstacle.x === this.state.cells[0].x - 1 && obstacle.y === this.state.cells[0].y) {
-              console.log("You hit an obstacle left")
-              return true
-           } else {
-            emptyObstacles.push(obstacle)           
-           }
-        })
-        if (emptyObstacles.length > 58) {
-            this.moveSquareLeft()
-        }
+    moveSquareDiagUpLeft = () => {
+        this.setState( {cells: [{ x: this.state.cells[0].x - 1, y: this.state.cells[0].y - 1 }] }) 
     }
 
+    moveSquareDiagUpRight = () => {
+        this.setState( {cells: [{ x: this.state.cells[0].x + 1, y: this.state.cells[0].y - 1 }] }) 
+    }
+
+    moveSquareDiagDownLeft = () => {
+        this.setState( {cells: [{ x: this.state.cells[0].x - 1, y: this.state.cells[0].y + 1 }] }) 
+    }
+
+    moveSquareDiagDownRight = () => {
+        this.setState( {cells: [{ x: this.state.cells[0].x + 1, y: this.state.cells[0].y + 1 }] }) 
+    }
+
+        // Conditional Methods that direct response to
+        // key presses (Basic)
+    
     detectUpObstacles = () => {
         let emptyObstacles = [];
         this.state.obstacles.forEach((obstacle) => {
-           if (obstacle.x === this.state.cells[0].x && obstacle.y === this.state.cells[0].y - 1) {
-              console.log("You hit an obstacle up")
-              return true
-           } else {
-            emptyObstacles.push(obstacle)           
-           }
+            if (obstacle.x === this.state.cells[0].x && obstacle.y === this.state.cells[0].y - 1) {
+                console.log("You hit an obstacle up")
+                return true
+            } else {
+                emptyObstacles.push(obstacle)           
+            }
         })
         if (emptyObstacles.length > 58) {
             this.moveSquareUp()
@@ -103,6 +104,21 @@ class Game extends React.Component {
         }
     }
 
+    detectLeftObstacles = () => {
+        let emptyObstacles = [];
+        this.state.obstacles.forEach((obstacle) => {
+           if (obstacle.x === this.state.cells[0].x - 1 && obstacle.y === this.state.cells[0].y) {
+              console.log("You hit an obstacle left")
+              return true
+           } else {
+            emptyObstacles.push(obstacle)           
+           }
+        })
+        if (emptyObstacles.length > 58) {
+            this.moveSquareLeft()
+        }
+    }
+
     detectRightObstacles = () => {
         let emptyObstacles = [];
         this.state.obstacles.forEach((obstacle) => {
@@ -118,43 +134,137 @@ class Game extends React.Component {
         }
     }
 
+      // Conditional Methods that direct response to
+        // key presses (Extended Diagonal)
+
+    detectDiagUpLeftObstacles = () => {
+        let emptyObstacles = [];
+        this.state.obstacles.forEach((obstacle) => {
+           if (obstacle.x === this.state.cells[0].x - 1 && obstacle.y === this.state.cells[0].y - 1) {
+              console.log("You hit an obstacle in the diagonal up left corner")
+              return true
+           } else {
+            emptyObstacles.push(obstacle)           
+           }
+        })
+        if (emptyObstacles.length > 58) {
+            this.moveSquareDiagUpLeft()
+        }
+    }
+
+    detectDiagUpRightObstacles = () => {
+        let emptyObstacles = [];
+        this.state.obstacles.forEach((obstacle) => {
+           if (obstacle.x === this.state.cells[0].x + 1 && obstacle.y === this.state.cells[0].y - 1) {
+              console.log("You hit an obstacle in the diagonal up right corner")
+              return true
+           } else {
+            emptyObstacles.push(obstacle)           
+           }
+        })
+        if (emptyObstacles.length > 58) {
+            this.moveSquareDiagUpRight()
+        }
+    }
+
+    detectDiagDownLeftObstacles = () => {
+        let emptyObstacles = [];
+        this.state.obstacles.forEach((obstacle) => {
+           if (obstacle.x === this.state.cells[0].x - 1 && obstacle.y === this.state.cells[0].y + 1) {
+              console.log("You hit an obstacle in the diagonal down left corner")
+              return true
+           } else {
+            emptyObstacles.push(obstacle)           
+           }
+        })
+        if (emptyObstacles.length > 58) {
+            this.moveSquareDiagDownLeft()
+        }
+    }
+
+    detectDiagDownRightObstacles = () => {
+        let emptyObstacles = [];
+        this.state.obstacles.forEach((obstacle) => {
+           if (obstacle.x === this.state.cells[0].x + 1 && obstacle.y === this.state.cells[0].y + 1) {
+              console.log("You hit an obstacle in the diagonal down right corner")
+              return true
+           } else {
+            emptyObstacles.push(obstacle)           
+           }
+        })
+        if (emptyObstacles.length > 58) {
+            this.moveSquareDiagDownRight()
+        }
+    }
+
+    // Primary Handler for response to key presses // 
+
     handleKeyPress = (e) => {
         e.preventDefault()
         e.persist()
+   //     console.log(e.key)
         let charCoordX = this.state.cells[0].x
         let charCoordY = this.state.cells[0].y
         const direction = e.key 
         switch (direction) {
-            case 'ArrowUp':
+            case 'w':                             // UP
                 if (charCoordY > 0) {
                     this.detectUpObstacles();
                 } else {
                     console.log('Barrier Up');
                 }
                 break;
-            case 'ArrowDown':
+            case 'x':                             // DOWN
                 if (charCoordY < 12) {
                     this.detectDownObstacles();
                 } else {
                     console.log('Barrier Down')
                 }
                 break;
-            case 'ArrowLeft':
+            case 'a':                             // LEFT
                 if (charCoordX > 0) {
                     this.detectLeftObstacles()
                 } else {
                     console.log('Barrier Left')
                 }
                 break;
-            case 'ArrowRight':
+            case 'd':                             // RIGHT
                 if (charCoordX < 10) {
                     this.detectRightObstacles();
                 } else {
                     console.log('Barrier Right')
                 }
                 break;
+            case 'q':                             // DIAG UP LEFT
+                if (charCoordX > 0 && charCoordY > 0) {
+                    this.detectDiagUpLeftObstacles();
+                } else {
+                    console.log('Barrier Corner')
+                }
+                break;
+            case 'e':                             // DIAG UP RIGHT
+                if (charCoordX < 10 && charCoordY > 0) {
+                    this.detectDiagUpRightObstacles();
+                } else {
+                    console.log('Barrier Corner')
+                }
+                break;
+            case 'z':                             // DIAG DOWN LEFT
+                if (charCoordX > 0 && charCoordY < 12) {
+                    this.detectDiagDownLeftObstacles();
+                } else {
+                    console.log('Barrier Corner')
+                }
+                break;
+            case 'c':                             // DIAG DOWN RIGHT
+                if (charCoordX < 10 && charCoordY < 12) {
+                    this.detectDiagDownRightObstacles();
+                } else {
+                    console.log('Barrier Corner')
+                }
+                break;
                 default:
-                    console.log('Not a Movement Key')
+                    return
         }
     }
         // Map Render function //
