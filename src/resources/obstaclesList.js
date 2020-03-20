@@ -1,4 +1,3 @@
-import React from 'react';
 
 const obstaclesList = [ 
     {x: 0, y: 0}, 
